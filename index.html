@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>itter.tw</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="theme-color" content="#000">
+    </head>
+    <body>
+		<h1>itter.tw</h1>
+		<ul id="timeline">
+		
+		</ul>
+		
+		<script id="tweetTemplate" type="x-tmpl-mustache">
+		<li class="tweet"><strong>@{{user.screen_name}}</strong> {{text}}</li>
+		</script>
+        <script type="text/javascript" src="//dav.li/jquery/2.1.4.js"></script>
+		<script type="text/javascript" src="//dav.li/mustache/mustache.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			var tweetTemplate = $('#tweetTemplate').html();
+			Mustache.parse(tweetTemplate);
+			
+			var socket = io.connect('http://vps.dav.li:8080');
+			socket.on('init', function (data) {
+				console.log("//Connected");
+				socket.emit('init', { data: 'ping' });
+			});
+
+			socket.on('timelineUpdate', function (data) {
+				console.log(data);
+				$('#timeline').prepend(Mustache.render(tweetTemplate, data.newTweet));
+			});
+			
+		</script>
+    </body>
+</html>
