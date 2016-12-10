@@ -1,38 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>itter.tw</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta name="theme-color" content="#000">
-    </head>
-    <body>
-		<h1>itter.tw</h1>
-		<ul id="timeline">
-		
-		</ul>
-		
-		<script id="tweetTemplate" type="x-tmpl-mustache">
-		<li class="tweet"><strong>@{{user.screen_name}}</strong> {{text}}</li>
-		</script>
-        <script type="text/javascript" src="//dav.li/jquery/2.1.4.js"></script>
-		<script type="text/javascript" src="//dav.li/mustache/mustache.js"></script>
-		<script src="/socket.io/socket.io.js"></script>
-		<script>
-			var tweetTemplate = $('#tweetTemplate').html();
-			Mustache.parse(tweetTemplate);
-			
-			var socket = io.connect('http://vps.dav.li:8080');
-			socket.on('init', function (data) {
-				console.log("//Connected");
-				socket.emit('init', { data: 'ping' });
-			});
+<head>
+	<meta charset="utf-8" />
+	<title>itter.tw</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="theme-color" content="#000">
+</head>
+<body>
+	<h1>itter.tw</h1>
+	<ul id="timeline">
+	
+	</ul>
+	
+<script type="text/javascript" src="//dav.li/jquery/2.1.4.js"></script>
+<script type="text/javascript" src="//dav.li/markupjs/1.5.21.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var tweetTemplate = '<li class="tweet"><a href="//twitter.com/{{twitter.user.screen_name}}" target="_blank"><img src="{{twitter.user.profile_image_url}}" alt"PP" style="height:20px"> {{twitter.user.name}} @{{twitter.user.screen_name}}</a> {{ittertw}}</li>';
+	
+	var socket = io.connect('http://vps.dav.li:8080');
+	socket.on('init', function (data) {
+		console.log("//Connected to server //Client id:["+data.id+"]");
+		socket.emit('init', { data: 'ping' });
+	});
+	socket.on('console', function (json) {
+		console.log(json.data);
+	});
 
-			socket.on('timelineUpdate', function (data) {
-				console.log(data);
-				$('#timeline').prepend(Mustache.render(tweetTemplate, data.newTweet));
-			});
-			
-		</script>
-    </body>
+	socket.on('timelineUpdate', function (data) {
+		console.log(data);
+		
+		$('#timeline').prepend(Mark.up(tweetTemplate, { twitter:data.tweet, ittertw:preprocess(data.tweet)}));
+	});
+	
+	function preprocess(tweet){
+		var returndata="";
+		if(tweet.retweeted_status!=undefined){ //It's a RT
+			returndata+=preprocess(tweet.retweeted_status);
+		}else{
+			returndata=tweet.text;
+			//console.log(util.inspect(tweet.entities.hashtags));
+			for(var i in tweet.entities.hashtags){ //hashtags
+				var hashtag=tweet.entities.hashtags[i];
+				returndata=returndata.replace("#"+hashtag.text,'<a class="hashtag" href="//twitter.com/hashtag/'+hashtag.text+'" target="_blank">#'+hashtag.text+'</a>');
+			}
+			for(var i in tweet.entities.urls){ //links
+				var link=tweet.entities.urls[i];
+				returndata=returndata.replace(link.url,'<a class="link" href="'+link.expanded_url+'" target="_blank">'+link.display_url+'</a>');
+			}
+			for(var i in tweet.entities.user_mentions){ //mention
+				var mention=tweet.entities.user_mentions[i];
+				returndata=returndata.replace("@"+mention.screen_name,'<a class="mention" href="//twitter.com/'+mention.screen_name+'" target="_blank">@'+mention.name+'</a>');
+			}
+		}
+		
+		return returndata;
+	}
+	
+</script>
+</body>
 </html>
