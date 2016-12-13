@@ -25,7 +25,7 @@ io.on('connection', function (socket) {
  
 	var T = new Twit(tokens);
 
-	var stream = T.stream('user');
+	var stream = T.stream('user', { tweet_mode: 'extended' });
 	//var stream = T.stream('statuses/sample');
 	//var stream = T.stream('statuses/filter', { track: 'youtube' });	 
 	
@@ -46,7 +46,7 @@ io.on('connection', function (socket) {
 	});
 	
 
-	T.get('statuses/home_timeline', { count: 20 } , function(err, data) {
+	T.get('statuses/home_timeline', { count: 20, tweet_mode: 'extended' } , function(err, data) {
 		for (var i = data.length-1; i >=  0; i--) {
 			socket.emit('timelineUpdate', { tweet: data[i]});
 		}

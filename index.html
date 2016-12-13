@@ -36,7 +36,7 @@
 		<li class="tweet">
 			<header>
 				<a class="user" href="//twitter.com/{{twitter.user.screen_name}}" target="_blank">
-					<img src="{{twitter.user.profile_image_url}}" alt"Profil picture of {{twitter.user.name}}">{{twitter.user.name}} @{{twitter.user.screen_name}}
+					<img src="{{twitter.user.profile_image_url}}" alt="Profil picture of {{twitter.user.name}}">{{twitter.user.name}} @{{twitter.user.screen_name}}
 				</a>
 			</header>
 			{{if twitter.retweeted_status}}
@@ -44,15 +44,54 @@
 				RT
 				<header>
 					<a class="user" href="//twitter.com/{{twitter.retweeted_status.user.screen_name}}" target="_blank">
-						<img src="{{twitter.retweeted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.retweeted_status.user.name}} @{{twitter.retweeted_status.user.name}}
+						<img src="{{twitter.retweeted_status.user.profile_image_url}}" alt="Profil picture of {{twitter.retweeted_status.user.name}}" style="height:20px">{{twitter.retweeted_status.user.name}} @{{twitter.retweeted_status.user.name}}
 					</a>
 				</header>
 				{{preprocess.retweeted_status.tweet}}
+				{{if twitter.quoted_status}}
+				<div class="embedtweet">
+					QUOTED
+					<header>
+						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank">
+							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.name}}
+						</a>
+					</header>
+					{{preprocess.quoted_status.tweet}}
+				</div>
+				{{/if}}
 			</div>
 			{{else}}
-			{{preprocess.tweet}}
+				{{preprocess.tweet}}
+				{{if twitter.quoted_status}}
+				<div class="embedtweet">
+					QUOTED
+					<header>
+						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank">
+							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.name}}
+						</a>
+					</header>
+					{{preprocess.quoted_status.tweet}}
+				</div>
+				{{/if}}
 			{{/if}}
+			
 		</li>
+	</div>
+	
+	<div id="hashtagTemplate" style="display:none">
+		<a class="hashtag" href="//twitter.com/hashtag/{{text}}" target="_blank">#{{text}}</a>
+	</div>
+	
+	<div id="linkTemplate" style="display:none">
+		<a class="link" href="{{expanded_url}}" target="_blank">{{display_url}}</a>
+	</div>
+	
+	<div id="mentionTemplate" style="display:none">
+		<a class="mention" href="//twitter.com/{{screen_name}}" target="_blank">@{{screen_name}}</a>
+	</div>
+	
+	<div id="imgTemplate" style="display:none">
+		<br/><img class="media" src="{{media_url_https}}" alt="" />
 	</div>
 	
 	
@@ -74,40 +113,64 @@
 
 	socket.on('timelineUpdate', function (data) {
 		console.log(data);
+		var datapreprocess={ twitter:data.tweet, preprocess:preprocess(data.tweet)}
+		//console.log(data);
 		
-		$('#timeline').prepend(Mark.up(tweetTemplate, { twitter:data.tweet, preprocess:preprocess(data.tweet)}));
+		$('#timeline').prepend(Mark.up(tweetTemplate, datapreprocess));
 	});
 	
 	function preprocess(tweet){
 		var returndata={tweet:""};
+        
+        var tweet_entities=tweet.entities;
+		var tweet_extended_entities=tweet.extended_entities;
+        
+        if(tweet.full_text!=undefined){
+            returndata.tweet=tweet.full_text;
+        }else if(tweet.extended_tweet.full_text!=undefined){
+            returndata.tweet=tweet.extended_tweet.full_text;
+			tweet_entities=tweet.extended_tweet.entities;
+			tweet_extended_entities=tweet.extended_tweet.extended_entities;
+        }else{
+            returndata.tweet=tweet.text;
+        }
+		
 		if(tweet.retweeted_status!=undefined){ //It's a RT
 			returndata.retweeted_status=preprocess(tweet.retweeted_status);
-		}else{
-			returndata.tweet=tweet.text;
-			//console.log(util.inspect(tweet.entities.hashtags));
-			for(var i in tweet.entities.hashtags){ //hashtags
-				var hashtag=tweet.entities.hashtags[i];
-				returndata.tweet=returndata.tweet.replace("#"+hashtag.text,'<a class="hashtag" href="//twitter.com/hashtag/'+hashtag.text+'" target="_blank">#'+hashtag.text+'</a>');
-			}
-			for(var i in tweet.entities.urls){ //links
-				var link=tweet.entities.urls[i];
-				returndata.tweet=returndata.tweet.replace(link.url,'<a class="link" href="'+link.expanded_url+'" target="_blank">'+link.display_url+'</a>');
-			}
-			for(var i in tweet.entities.user_mentions){ //mention
-				var mention=tweet.entities.user_mentions[i];
-				returndata.tweet=returndata.tweet.replace("@"+mention.screen_name,'<a class="mention" href="//twitter.com/'+mention.screen_name+'" target="_blank">@'+mention.screen_name+'</a>');
-			}
-			if(tweet.extended_entities){
-				for(var i in tweet.extended_entities.media){ //media
-					var media=tweet.extended_entities.media[i];
-					if(media.type=="photo"){
-						returndata.tweet=returndata.tweet.replace(media.url,'<br/><img class="media" src="'+media.media_url_https+'" alt="" />');
-					}
+		}
+		if(tweet.quoted_status!=undefined){ //It's a quoted tweet
+			returndata.quoted_status=preprocess(tweet.quoted_status);
+		}
+		
+		//console.log(util.inspect(tweet.entities.hashtags));
+		for(var i in tweet_entities.hashtags){ //hashtags
+			var hashtag=tweet_entities.hashtags[i];
+			returndata.tweet=returndata.tweet.replace("#"+hashtag.text,Mark.up($("#hashtagTemplate").html(), hashtag));
+		}
+		for(var i in tweet_entities.urls){ //links
+			var link=tweet_entities.urls[i];
+			returndata.tweet=returndata.tweet.replace(link.url,Mark.up($("#linkTemplate").html(), link));
+		}
+		for(var i in tweet_entities.user_mentions){ //mention
+			var mention=tweet_entities.user_mentions[i];
+			returndata.tweet=returndata.tweet.replace("@"+mention.screen_name,Mark.up($("#mentionTemplate").html(), mention));
+		}
+		if(tweet_extended_entities){
+			for(var i in tweet_extended_entities.media){ //media
+				var media=tweet_extended_entities.media[i];
+				if(media.type=="photo"){
+					returndata.tweet=returndata.tweet.replace(media.url,Mark.up($("#imgTemplate").html(), media));
 				}
 			}
-			returndata.tweet=twemoji.parse(returndata.tweet);
 		}
+		returndata.tweet=twemoji.parse(returndata.tweet);
 		//console.log(returndata);
+		
+		if(tweet.truncated==true && tweet.extended_tweet==undefined){
+            returndata.tweet+=" <strong>[Truncated w/o extended_tweet]</strong>";
+            console.error("[Truncated w/o extended_tweet]");
+		}
+		
 		return returndata;
 	}
 	
