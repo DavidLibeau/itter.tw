@@ -12,6 +12,7 @@ Open source hackable Twitter client for everyone.
   * ExpressJS
 3. a web browser
 4. a valid Twitter account
+
 ### How to
 1. Install all requirements
 2. Put the _app.js_ and _index.html_ files in your server/localhost directory
