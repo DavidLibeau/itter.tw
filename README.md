@@ -21,6 +21,7 @@ Open source hackable Twitter client for everyone.
   * Description : <code>itter.tw, cool Twitter client.</code>
   * Website : <code>https://itter.tw/</code>
 4. Create a _tokens.json_ file, with the data of your app
+
  ```
  {
     "consumer_key":"...",
@@ -29,13 +30,18 @@ Open source hackable Twitter client for everyone.
     "access_token_secret":"..."
  }
  ```
+ 
 5. Put your server adress in _index.html_
+
  ```
  var socket = io.connect('...');
  ```
+ 
 6. Launch the script
+
  ```
  node apps.js
  ```
+ 
 7. Connect to your page _index.html_ on port :8080
 8. That'ts it. So simple!
