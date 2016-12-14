@@ -5,13 +5,13 @@ Open source hackable Twitter client for everyone.
 >This client can be launch in local host. 
 
 ### What you need
-1. [NodeJS](https://nodejs.org/)
-2. Node modules :
-  * [Twit](https://www.npmjs.com/package/twit)
-  * [socket.io](https://socket.io/)
-  * [ExpressJS](https://expressjs.com/)
-3. a web browser
-4. a valid Twitter account
+* [NodeJS](https://nodejs.org/)
+* Node modules :
+  - [Twit](https://www.npmjs.com/package/twit)
+  - [socket.io](https://socket.io/)
+  - [ExpressJS](https://expressjs.com/)
+* a web browser
+* a valid Twitter account
 
 ### How to
 1. Install all requirements
