@@ -8,7 +8,7 @@ Open source hackable Twitter client for everyone.
 1. [NodeJS](https://nodejs.org/)
 2. Node modules :
   * [Twit](https://www.npmjs.com/package/twit)
-  * (socket.io)
+  * [socket.io](https://socket.io/)
   * [ExpressJS](https://expressjs.com/)
 3. a web browser
 4. a valid Twitter account
