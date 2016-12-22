@@ -38,6 +38,7 @@
 				<a class="user" href="//twitter.com/{{twitter.user.screen_name}}" target="_blank">
 					<img src="{{twitter.user.profile_image_url}}" alt="Profil picture of {{twitter.user.name}}">{{twitter.user.name}} @{{twitter.user.screen_name}}
 				</a>
+				[<a href="//twitter.com/i/web/status/{{twitter.id_str}}" target="_blank">{{preprocess.date}}</a>]
 			</header>
 			{{if twitter.retweeted_status}}
 			<div class="embedtweet">
@@ -46,6 +47,7 @@
 					<a class="user" href="//twitter.com/{{twitter.retweeted_status.user.screen_name}}" target="_blank">
 						<img src="{{twitter.retweeted_status.user.profile_image_url}}" alt="Profil picture of {{twitter.retweeted_status.user.name}}" style="height:20px">{{twitter.retweeted_status.user.name}} @{{twitter.retweeted_status.user.name}}
 					</a>
+					[<a href="//twitter.com/i/web/status/{{twitter.retweeted_status.id_str}}" target="_blank">{{preprocess.retweeted_status.date}}</a>]
 				</header>
 				{{preprocess.retweeted_status.tweet}}
 				{{if twitter.quoted_status}}
@@ -55,6 +57,7 @@
 						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank">
 							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.name}}
 						</a>
+						[<a href="//twitter.com/i/web/status/{{twitter.quoted_status.id_str}}" target="_blank">{{preprocess.quoted_status.date}}</a>]
 					</header>
 					{{preprocess.quoted_status.tweet}}
 				</div>
@@ -91,7 +94,7 @@
 	</div>
 	
 	<div id="imgTemplate" style="display:none">
-		<br/><img class="media" src="{{media_url_https}}" alt="" />
+		<img class="media" src="{{media_url_https}}" alt="" />
 	</div>
 	
 	
@@ -112,28 +115,28 @@
 	});
 
 	socket.on('timelineUpdate', function (data) {
-		console.log(data);
-		var datapreprocess={ twitter:data.tweet, preprocess:preprocess(data.tweet)}
 		//console.log(data);
+		var datapreprocess={ twitter:data.tweet, preprocess:preprocess(data.tweet)}
+		console.log(datapreprocess);
 		
 		$('#timeline').prepend(Mark.up(tweetTemplate, datapreprocess));
 	});
 	
 	function preprocess(tweet){
 		var returndata={tweet:""};
-        
-        var tweet_entities=tweet.entities;
-		var tweet_extended_entities=tweet.extended_entities;
-        
         if(tweet.full_text!=undefined){
             returndata.tweet=tweet.full_text;
-        }else if(tweet.extended_tweet.full_text!=undefined){
-            returndata.tweet=tweet.extended_tweet.full_text;
-			tweet_entities=tweet.extended_tweet.entities;
-			tweet_extended_entities=tweet.extended_tweet.extended_entities;
         }else{
             returndata.tweet=tweet.text;
         }
+		
+		var tweet_entities=tweet.entities;
+		var tweet_extended_entities=tweet.extended_entities;
+		if(tweet.extended_tweet!=undefined){ //Truncated tweet
+			returndata.tweet=tweet.extended_tweet.full_text;
+			tweet_entities=tweet.extended_tweet.entities;
+			tweet_extended_entities=tweet.extended_tweet.extended_entities;
+		}
 		
 		if(tweet.retweeted_status!=undefined){ //It's a RT
 			returndata.retweeted_status=preprocess(tweet.retweeted_status);
@@ -156,20 +159,23 @@
 			returndata.tweet=returndata.tweet.replace("@"+mention.screen_name,Mark.up($("#mentionTemplate").html(), mention));
 		}
 		if(tweet_extended_entities){
+			var medias="";
 			for(var i in tweet_extended_entities.media){ //media
 				var media=tweet_extended_entities.media[i];
-				if(media.type=="photo"){
-					returndata.tweet=returndata.tweet.replace(media.url,Mark.up($("#imgTemplate").html(), media));
+				if(media.type=="photo" || media.type=="animated_gif"){
+					medias+=Mark.up($("#imgTemplate").html(), media);
 				}
 			}
+			returndata.tweet=returndata.tweet.replace(media.url,"<br/>"+medias);
 		}
 		returndata.tweet=twemoji.parse(returndata.tweet);
 		//console.log(returndata);
 		
-		if(tweet.truncated==true && tweet.extended_tweet==undefined){
-            returndata.tweet+=" <strong>[Truncated w/o extended_tweet]</strong>";
-            console.error("[Truncated w/o extended_tweet]");
-		}
+		
+		/* Timestamp */		
+		var date=new Date(tweet.created_at);
+		returndata.date=date.toLocaleString();
+		
 		
 		return returndata;
 	}
