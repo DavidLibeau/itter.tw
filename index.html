@@ -9,6 +9,10 @@
 	<style>
         
         body{
+		    display: flex;
+			flex-direction: column;
+			height: 100vh;
+			margin: 0;
             font-family: sans-serif;
         }
 		
@@ -22,8 +26,13 @@
         }
         
 		ul {
+			margin: 0;
 			padding: 0;
 			list-style: none;
+		}
+		body>ul{
+			flex: 0 1 auto;
+			overflow-y: scroll;
 		}
 		
 		.tweet, .embedtweet{
@@ -34,6 +43,7 @@
 		}
 		.tweet {
 			margin: 15px 5px;
+			margin-bottom: 0;
 		}
 		.embedtweet{
 			margin: 5px 20px;
@@ -99,7 +109,7 @@
 	</ul>
 	
 	<div id="tweetTemplate" class="markupTemplate">
-		<li class="tweet">
+		<li id="tweet{{twitter.id_str}}" class="tweet">
 			<header>
 				<a class="user" href="//twitter.com/{{twitter.user.screen_name}}" target="_blank" style="color:#{{twitter.user.profile_link_color}}">
 					<img src="{{twitter.user.profile_image_url}}" alt="Profil picture of {{twitter.user.name}}">{{twitter.user.name}} @{{twitter.user.screen_name}}
@@ -229,7 +239,10 @@
 		var datapreprocess={ twitter:data.tweet, preprocess:preprocess(data.tweet)}
 		console.log(datapreprocess);
 		
-		$('#timeline').prepend(Mark.up(tweetTemplate, datapreprocess));
+		$("#timeline").prepend(Mark.up(tweetTemplate, datapreprocess));
+		timelineToScroll=$("#timeline").scrollTop()+$("#tweet"+data.tweet.id_str).outerHeight(true);
+		console.log("Timeline scroll : "+$("#timeline").scrollTop()+" | Tweet outerHeight :"+$("#tweet"+data.tweet.id_str).outerHeight(true)+" | + :"+timelineToScroll);
+		$("#timeline").scrollTop(timelineToScroll);
 	});
 	
 	function preprocess(tweet){
