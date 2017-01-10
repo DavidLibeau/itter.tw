@@ -16,6 +16,10 @@
             font-family: sans-serif;
         }
 		
+		h1,h2,h3 {
+			margin: 0;
+		}
+		
         a{
             display: inline-block;
             text-decoration: none;
@@ -24,15 +28,35 @@
         a:hover{
             text-decoration: underline;
         }
-        
+		
 		ul {
 			margin: 0;
 			padding: 0;
 			list-style: none;
 		}
-		body>ul{
+        
+		.timeline{
+			display: flex;
+			position: relative;
 			flex: 0 1 auto;
+			padding-top: 45px;
+			margin: 10px;
+			-webkit-box-shadow: 0 0 7px 0 rgba(0,0,0,0.2);
+			box-shadow: 0 0 7px 0 rgba(0,0,0,0.2);
+		}
+		.timeline>ul {
+			width: 100%;
 			overflow-y: scroll;
+		}
+		.timeline>header{
+			position: absolute;
+			top: 0;
+			width: 100%;
+			background-color: #fcfcfc;
+			z-index: 9;
+		}
+		.timeline>header>h3{
+		    padding: 10px;
 		}
 		
 		.tweet, .embedtweet{
@@ -103,10 +127,10 @@
 </head>
 <body>
 	<h1>itter.tw</h1>
-	<h3><a href="//twitter.com/DavidLibeau" target="_blank">@DavidLibeau</a>'s timeline</h3>
-	<ul id="timeline">
-	
-	</ul>
+	<div id="homeTimeline" class="timeline">
+		<header><h3><a href="//twitter.com/DavidLibeau" target="_blank">@DavidLibeau</a>'s timeline</h3></header>
+		<ul></ul>
+	</div>
 	
 	<div id="tweetTemplate" class="markupTemplate">
 		<li id="tweet{{twitter.id_str}}" class="tweet">
@@ -239,10 +263,10 @@
 		var datapreprocess={ twitter:data.tweet, preprocess:preprocess(data.tweet)}
 		console.log(datapreprocess);
 		
-		$("#timeline").prepend(Mark.up(tweetTemplate, datapreprocess));
-		timelineToScroll=$("#timeline").scrollTop()+$("#tweet"+data.tweet.id_str).outerHeight(true);
-		console.log("Timeline scroll : "+$("#timeline").scrollTop()+" | Tweet outerHeight :"+$("#tweet"+data.tweet.id_str).outerHeight(true)+" | + :"+timelineToScroll);
-		$("#timeline").scrollTop(timelineToScroll);
+		$("#homeTimeline>ul").prepend(Mark.up(tweetTemplate, datapreprocess));
+		timelineToScroll=$("#homeTimeline>ul").scrollTop()+$("#tweet"+data.tweet.id_str).outerHeight(true);
+		console.log("Timeline scroll : "+$("#homeTimeline>ul").scrollTop()+" | Tweet outerHeight :"+$("#tweet"+data.tweet.id_str).outerHeight(true)+" | + :"+timelineToScroll);
+		$("#homeTimeline>ul").scrollTop(timelineToScroll);
 	});
 	
 	function preprocess(tweet){
@@ -308,6 +332,25 @@
 		
 		return preprocessdata;
 	}
+	
+	
+	//Other
+	$(".timeline>ul").scroll(function(){
+		if($(this).scrollTop()==0){
+			$(this).siblings("header").css({
+				"-webkit-box-shadow": "",
+				"box-shadow": ""
+			});
+		}else{
+			$(this).siblings("header").css({
+				"-webkit-box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)",
+				"box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)"
+			});
+		}
+	});
+	$(".timeline>header").click(function(){
+		$(this).siblings("ul").animate( { scrollTop: 0 }, 200 );
+	});
 	
 </script>
 </body>
