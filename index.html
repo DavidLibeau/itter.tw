@@ -5,18 +5,79 @@
 	<title>itter.tw</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta name="theme-color" content="#000">
+	<link href="//dav.li/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<style>
+        
+        body{
+            font-family: sans-serif;
+        }
 		
+        a{
+            display: inline-block;
+            text-decoration: none;
+            color: #1DA1F2;
+        }
+        a:hover{
+            text-decoration: underline;
+        }
+        
+		ul {
+			padding: 0;
+			list-style: none;
+		}
+		
+		.tweet, .embedtweet{
+			position: relative;
+			border: 1px solid #CCC;
+			padding: 5px;
+			border-radius: 2px;
+		}
+		.tweet {
+			margin: 15px 5px;
+		}
+		.embedtweet{
+			margin: 5px 20px;
+		}
+		
+		.tweet header {
+			border-bottom: 1px solid #CCC;
+			padding-bottom: 2px;
+			margin-bottom: 7px;
+		}
 		.user img{
 			height:20px;
+            margin-right: 5px;
+		}
+        .timestamp{
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .timestamp, .timestamp * {
+            color: gray!important;
+        }
+		
+		.embedtweet>i{
+			position: absolute;
+			left: -20px;
+			color: #696969;
 		}
 		
-		.embedtweet{
-			padding-left: 20px;
-		}
-	
-		.media{
+		.media img{
 			height:100px;
+		}
+		a.media {
+			cursor:zoom-in;
+		}
+		
+		.tweet footer {
+			border-top: 1px solid #CCC;
+			padding-top: 2px;
+			margin-top: 7px;
+		}
+		.tweet footer li {
+			display: inline-block;
+			margin-right: 5px;
+			color: #696969;
 		}
 		
 		.emoji{
@@ -24,42 +85,70 @@
 			height: 20px;
 			top: 2px;
 		}
+		
+		.markupTemplate{
+			display: none;
+		}
 	</style>
 </head>
 <body>
 	<h1>itter.tw</h1>
+	<h3><a href="//twitter.com/DavidLibeau" target="_blank">@DavidLibeau</a>'s timeline</h3>
 	<ul id="timeline">
 	
 	</ul>
 	
-	<div id="tweetTemplate" style="display:none">
+	<div id="tweetTemplate" class="markupTemplate">
 		<li class="tweet">
 			<header>
-				<a class="user" href="//twitter.com/{{twitter.user.screen_name}}" target="_blank">
+				<a class="user" href="//twitter.com/{{twitter.user.screen_name}}" target="_blank" style="color:#{{twitter.user.profile_link_color}}">
 					<img src="{{twitter.user.profile_image_url}}" alt="Profil picture of {{twitter.user.name}}">{{twitter.user.name}} @{{twitter.user.screen_name}}
 				</a>
-				[<a href="//twitter.com/i/web/status/{{twitter.id_str}}" target="_blank">{{preprocess.date}}</a>]
+                <span class="timestamp">
+				    <a href="//twitter.com/i/web/status/{{twitter.id_str}}" target="_blank">{{preprocess.date}}</a>
+                    via {{preprocess.source}}
+                </span>
 			</header>
 			{{if twitter.retweeted_status}}
 			<div class="embedtweet">
-				RT
+				<i class="fa fa-retweet" aria-hidden="true"></i>
 				<header>
-					<a class="user" href="//twitter.com/{{twitter.retweeted_status.user.screen_name}}" target="_blank">
-						<img src="{{twitter.retweeted_status.user.profile_image_url}}" alt="Profil picture of {{twitter.retweeted_status.user.name}}" style="height:20px">{{twitter.retweeted_status.user.name}} @{{twitter.retweeted_status.user.name}}
+					<a class="user" href="//twitter.com/{{twitter.retweeted_status.user.screen_name}}" target="_blank" style="color:#{{twitter.retweeted_status.user.profile_link_color}}">
+						<img src="{{twitter.retweeted_status.user.profile_image_url}}" alt="Profil picture of {{twitter.retweeted_status.user.name}}" style="height:20px">{{twitter.retweeted_status.user.name}} @{{twitter.retweeted_status.user.screen_name}}
 					</a>
-					[<a href="//twitter.com/i/web/status/{{twitter.retweeted_status.id_str}}" target="_blank">{{preprocess.retweeted_status.date}}</a>]
+					<span class="timestamp">
+                        <a href="//twitter.com/i/web/status/{{twitter.retweeted_status.id_str}}" target="_blank">{{preprocess.retweeted_status.date}}</a>
+                        via {{preprocess.retweeted_status.source}}
+                    </span>
 				</header>
 				{{preprocess.retweeted_status.tweet}}
+				<footer>
+					<ul>
+						<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
+						<li class="retweet">{{twitter.retweeted_status.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
+						<li class="favorite">{{twitter.retweeted_status.favorite_count}}<i class="fa fa-star" aria-hidden="true"></i></li>
+					</ul>
+				</footer>
 				{{if twitter.quoted_status}}
 				<div class="embedtweet">
-					QUOTED
+					<i class="fa fa-quote-left" aria-hidden="true"></i>
 					<header>
-						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank">
-							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.name}}
+						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank" style="color:#{{twitter.quoted_status.user.profile_link_color}}">
+							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.screen_name}}
 						</a>
-						[<a href="//twitter.com/i/web/status/{{twitter.quoted_status.id_str}}" target="_blank">{{preprocess.quoted_status.date}}</a>]
+                        <span class="timestamp">
+						  <a href="//twitter.com/i/web/status/{{twitter.quoted_status.id_str}}" target="_blank">{{preprocess.quoted_status.date}}</a>
+                            via {{preprocess.quoted_status.source}}
+                        </span>
 					</header>
 					{{preprocess.quoted_status.tweet}}
+					<footer>
+						<ul>
+							<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
+							<li class="retweet">{{twitter.quoted_status.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
+							<li class="favorite">{{twitter.quoted_status.favorite_count}}<i class="fa fa-star" aria-hidden="true"></i></li>
+						</ul>
+					</footer>
 				</div>
 				{{/if}}
 			</div>
@@ -67,34 +156,55 @@
 				{{preprocess.tweet}}
 				{{if twitter.quoted_status}}
 				<div class="embedtweet">
-					QUOTED
+					<i class="fa fa-quote-left" aria-hidden="true"></i>
 					<header>
-						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank">
-							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.name}}
+						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank" style="color:#{{twitter.quoted_status.user.profile_link_color}}">
+							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.screen_name}}
 						</a>
+						<span class="timestamp">
+						  <a href="//twitter.com/i/web/status/{{twitter.quoted_status.id_str}}" target="_blank">{{preprocess.quoted_status.date}}</a>
+                            via {{preprocess.quoted_status.source}}
+                        </span>
 					</header>
 					{{preprocess.quoted_status.tweet}}
+					<footer>
+						<ul>
+							<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
+							<li class="retweet">{{twitter.quoted_status.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
+							<li class="favorite">{{twitter.quoted_status.favorite_count}}<i class="fa fa-star" aria-hidden="true"></i></li>
+						</ul>
+					</footer>
 				</div>
 				{{/if}}
 			{{/if}}
-			
+			<footer>
+				<ul>
+					<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
+					<li class="retweet">{{twitter.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
+					<li class="favorite">{{twitter.favorite_count}}<i class="fa fa-star" aria-hidden="true"></i></li>
+				</ul>
+			</footer>
 		</li>
 	</div>
 	
-	<div id="hashtagTemplate" style="display:none">
+	<div id="hashtagTemplate" class="markupTemplate">
 		<a class="hashtag" href="//twitter.com/hashtag/{{text}}" target="_blank">#{{text}}</a>
 	</div>
 	
-	<div id="linkTemplate" style="display:none">
+	<div id="linkTemplate" class="markupTemplate">
 		<a class="link" href="{{expanded_url}}" target="_blank">{{display_url}}</a>
 	</div>
 	
-	<div id="mentionTemplate" style="display:none">
+	<div id="mentionTemplate" class="markupTemplate">
 		<a class="mention" href="//twitter.com/{{screen_name}}" target="_blank">@{{screen_name}}</a>
 	</div>
 	
-	<div id="imgTemplate" style="display:none">
-		<img class="media" src="{{media_url_https}}" alt="" />
+	<div id="imgTemplate" class="markupTemplate">
+		<a class="media" href="{{media_url_https}}" target="_blank"><img src="{{media_url_https}}" alt="" /></a>
+	</div>
+	
+	<div id="videoTemplate" class="markupTemplate">
+		<a class="media" href="{{video_info.variants.0.url}}" target="_blank" title="{{type}}"><img src="{{media_url_https}}" alt="" /></a>
 	</div>
 	
 	
@@ -123,61 +233,67 @@
 	});
 	
 	function preprocess(tweet){
-		var returndata={tweet:""};
+		var preprocessdata={tweet:""};
         if(tweet.full_text!=undefined){
-            returndata.tweet=tweet.full_text;
+            preprocessdata.tweet=tweet.full_text;
         }else{
-            returndata.tweet=tweet.text;
+            preprocessdata.tweet=tweet.text;
         }
 		
 		var tweet_entities=tweet.entities;
 		var tweet_extended_entities=tweet.extended_entities;
 		if(tweet.extended_tweet!=undefined){ //Truncated tweet
-			returndata.tweet=tweet.extended_tweet.full_text;
+			preprocessdata.tweet=tweet.extended_tweet.full_text;
 			tweet_entities=tweet.extended_tweet.entities;
 			tweet_extended_entities=tweet.extended_tweet.extended_entities;
 		}
 		
+        preprocessdata.source=tweet.source.replace('rel="nofollow"','target="_blank"');
+        
 		if(tweet.retweeted_status!=undefined){ //It's a RT
-			returndata.retweeted_status=preprocess(tweet.retweeted_status);
+			preprocessdata.retweeted_status=preprocess(tweet.retweeted_status);
+            preprocessdata.retweeted_status.source=tweet.retweeted_status.source.replace('rel="nofollow"','target="_blank"');
 		}
 		if(tweet.quoted_status!=undefined){ //It's a quoted tweet
-			returndata.quoted_status=preprocess(tweet.quoted_status);
+			preprocessdata.quoted_status=preprocess(tweet.quoted_status);
+            preprocessdata.quoted_status.source=tweet.quoted_status.source.replace('rel="nofollow"','target="_blank"');
 		}
 		
 		//console.log(util.inspect(tweet.entities.hashtags));
 		for(var i in tweet_entities.hashtags){ //hashtags
 			var hashtag=tweet_entities.hashtags[i];
-			returndata.tweet=returndata.tweet.replace("#"+hashtag.text,Mark.up($("#hashtagTemplate").html(), hashtag));
+			preprocessdata.tweet=preprocessdata.tweet.replace(new RegExp("[^>]#"+hashtag.text+"($|(<\/a>){0})","i"),Mark.up($("#hashtagTemplate").html(), hashtag));
 		}
 		for(var i in tweet_entities.urls){ //links
 			var link=tweet_entities.urls[i];
-			returndata.tweet=returndata.tweet.replace(link.url,Mark.up($("#linkTemplate").html(), link));
+			preprocessdata.tweet=preprocessdata.tweet.replace(link.url,Mark.up($("#linkTemplate").html(), link));
 		}
 		for(var i in tweet_entities.user_mentions){ //mention
 			var mention=tweet_entities.user_mentions[i];
-			returndata.tweet=returndata.tweet.replace("@"+mention.screen_name,Mark.up($("#mentionTemplate").html(), mention));
+			preprocessdata.tweet=preprocessdata.tweet.replace(new RegExp("@"+mention.screen_name+"($|(<\/a>){0})","i"),Mark.up($("#mentionTemplate").html(), mention));
 		}
 		if(tweet_extended_entities){
 			var medias="";
 			for(var i in tweet_extended_entities.media){ //media
 				var media=tweet_extended_entities.media[i];
-				if(media.type=="photo" || media.type=="animated_gif"){
+				if(media.type=="photo"){
 					medias+=Mark.up($("#imgTemplate").html(), media);
+				}else if(media.type=="animated_gif" || media.type=="video"){
+					medias+=Mark.up($("#videoTemplate").html(), media);
 				}
 			}
-			returndata.tweet=returndata.tweet.replace(media.url,"<br/>"+medias);
+			preprocessdata.tweet=preprocessdata.tweet.replace(media.url,"<br/>"+medias);
 		}
-		returndata.tweet=twemoji.parse(returndata.tweet);
-		//console.log(returndata);
+		preprocessdata.tweet=twemoji.parse(preprocessdata.tweet);
+		//console.log(preprocessdata);
 		
 		
 		/* Timestamp */		
 		var date=new Date(tweet.created_at);
-		returndata.date=date.toLocaleString();
+		preprocessdata.date=date.toLocaleString();
 		
 		
-		return returndata;
+		return preprocessdata;
 	}
 	
 </script>
