@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta name="theme-color" content="#000">
 	<link href="//dav.li/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//dav.li/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<style>
         
         body{
@@ -35,15 +36,82 @@
 			list-style: none;
 		}
         
-		.timeline{
-			display: flex;
-			position: relative;
-			flex: 0 1 auto;
-			padding-top: 45px;
-			margin: 10px;
-			-webkit-box-shadow: 0 0 7px 0 rgba(0,0,0,0.2);
-			box-shadow: 0 0 7px 0 rgba(0,0,0,0.2);
+        
+        /* Bootstrap */
+        .tab-dropdown-options {
+            margin-right: -30px;
+        }
+        .tab-dropdown-options>a {
+            display: inline-block!important;
+            padding-right: 40px!important;
+        }
+        .tab-dropdown-options>.dropdown-toggle {
+            position: relative;
+            left: -35px;
+            top: -1px;
+            margin-bottom: -1px;
+            padding: 9.5px 12px;
+            background: none;
+            color: #657786;
+            border-radius: 0;
+            border-bottom-left-radius: 2px;
+        }
+        .tab-dropdown-options.open>.dropdown-toggle,.tab-dropdown-options.active>.dropdown-toggle {
+            border-left: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab-dropdown-options>.dropdown-toggle:hover {
+            color: #14171A;
+        }
+        
+        
+        .dropdown-menu>li>form{
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;   
+        }
+        .dropdown-menu>li>form [type="checkbox"]{
+            position: relative;
+            margin: 0;
+            margin-right: 6px;
+            top: 2px;
+        }
+        
+        .nav-tabs {
+            white-space: nowrap;
+            padding-left: 10px;
+            padding-top: 10px;
+            /*overflow-y: hidden;
+            overflow-x: auto;*/
+        }
+        .nav-tabs>li {
+            float: none;
+            display: inline-block;
+        }
+		.nav-tabs>li>a>span{
+			margin-left: 5px;
 		}
+        
+        
+        
+        
+        .tab-content{
+            display: flex;
+			flex-direction: column;
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .timeline{
+            margin: -10px;   
+        }
+        .timeline.active{
+            display: flex!important;
+        }
 		.timeline>ul {
 			width: 100%;
 			overflow-y: scroll;
@@ -52,16 +120,20 @@
 			position: absolute;
 			top: 0;
 			width: 100%;
-			background-color: #fcfcfc;
+			background-color: #F5F8FA;
 			z-index: 9;
 		}
 		.timeline>header>h3{
+            display: inline-block;
 		    padding: 10px;
 		}
+        .timeline>header>form{
+            display: inline-block;
+        }
 		
 		.tweet, .embedtweet{
 			position: relative;
-			border: 1px solid #CCC;
+			border: 1px solid #AAB8C2;
 			padding: 5px;
 			border-radius: 2px;
 		}
@@ -74,7 +146,7 @@
 		}
 		
 		.tweet header {
-			border-bottom: 1px solid #CCC;
+			border-bottom: 1px solid #AAB8C2;
 			padding-bottom: 2px;
 			margin-bottom: 7px;
 		}
@@ -104,7 +176,7 @@
 		}
 		
 		.tweet footer {
-			border-top: 1px solid #CCC;
+			border-top: 1px solid #AAB8C2;
 			padding-top: 2px;
 			margin-top: 7px;
 		}
@@ -123,14 +195,69 @@
 		.markupTemplate{
 			display: none;
 		}
+        
+        
+        
 	</style>
 </head>
 <body>
-	<h1>itter.tw</h1>
-	<div id="homeTimeline" class="timeline">
-		<header><h3><a href="//twitter.com/DavidLibeau" target="_blank">@DavidLibeau</a>'s timeline</h3></header>
-		<ul></ul>
-	</div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation"><a href="#ittertw" aria-controls="ittertw" role="tab" data-toggle="tab"><span class="hidden-xs">itter.</span>tw</a></li>
+        <li role="presentation" class="active tab-dropdown-options">
+            <a href="#homeTimeline" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs">Home Timeline</span></a>
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Options</li>
+                <li>
+                    <form>
+                        <label class="autoscroll"><input type="checkbox" />Auto-scroll</label>
+                    </form>
+                </li>
+            </ul>
+        </li>
+        <li role="presentation"><a href="#notifications" aria-controls="notifications" role="tab" data-toggle="tab"><i class="fa fa-bell" aria-hidden="true"></i><span class="hidden-xs">Notifications</span></a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><i class="fa fa-envelope" aria-hidden="true"></i><span class="hidden-xs">Messages</span></a></li>
+        <li role="presentation" class="tab-dropdown-options">
+            <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i><span class="hidden-xs">Settings</span></a>
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" id="ittertw">
+            <h3>itter.tw</h3>
+        </div>
+        <div id="homeTimeline" role="tabpanel" class="tab-pane active timeline">
+            <ul></ul>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="notifications">
+            <h3>Notifications</h3>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="messages">
+            <h3>Messages</h3>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="settings">
+            <h3>Settings</h3>
+        </div>
+    </div>
+	
+	
+	
+	
 	
 	<div id="tweetTemplate" class="markupTemplate">
 		<li id="tweet{{twitter.id_str}}" class="tweet">
@@ -245,6 +372,7 @@
 <script src="//dav.li/jquery/2.1.4.js"></script>
 <script src="//dav.li/markupjs/1.5.21.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="//dav.li/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2"></script>
 <script>
 	var tweetTemplate = $("#tweetTemplate").html();
@@ -264,9 +392,10 @@
 		console.log(datapreprocess);
 		
 		$("#homeTimeline>ul").prepend(Mark.up(tweetTemplate, datapreprocess));
-		timelineToScroll=$("#homeTimeline>ul").scrollTop()+$("#tweet"+data.tweet.id_str).outerHeight(true);
-		console.log("Timeline scroll : "+$("#homeTimeline>ul").scrollTop()+" | Tweet outerHeight :"+$("#tweet"+data.tweet.id_str).outerHeight(true)+" | + :"+timelineToScroll);
-		$("#homeTimeline>ul").scrollTop(timelineToScroll);
+        if($('[href="#homeTimeline"]~.dropdown-menu .autoscroll>input').is(":checked")==false){
+            timelineToScroll=$("#homeTimeline>ul").scrollTop()+$("#tweet"+data.tweet.id_str).outerHeight(true);
+            $("#homeTimeline>ul").scrollTop(timelineToScroll);
+        }
 	});
 	
 	function preprocess(tweet){
@@ -335,21 +464,44 @@
 	
 	
 	//Other
-	$(".timeline>ul").scroll(function(){
-		if($(this).scrollTop()==0){
-			$(this).siblings("header").css({
-				"-webkit-box-shadow": "",
-				"box-shadow": ""
-			});
-		}else{
-			$(this).siblings("header").css({
+    $('.nav-tabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+    });
+    
+    $(".dropdown-menu>li>form").click(function(evt){ evt.stopPropagation() });
+    
+	$(".timeline.active>ul").scroll(function(){
+		if($(this).scrollTop()!=0){
+            $(".nav-tabs").css({
 				"-webkit-box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)",
 				"box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)"
 			});
+		}else{
+            $(".nav-tabs").css({
+				"-webkit-box-shadow": "",
+				"box-shadow": ""
+			});
 		}
 	});
-	$(".timeline>header").click(function(){
-		$(this).siblings("ul").animate( { scrollTop: 0 }, 200 );
+    $(".nav-tabs>li>a").click(function(){
+		if($($(this).attr("href")+".timeline>ul").length && $($(this).attr("href")+".timeline>ul").scrollTop()!=0){
+            $(".nav-tabs").css({
+				"-webkit-box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)",
+				"box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)"
+			});
+		}else{
+            $(".nav-tabs").css({
+				"-webkit-box-shadow": "",
+				"box-shadow": ""
+			});
+		}
+	});
+    
+	$('.nav-tabs>li>a').click(function(){
+        if($(this).attr("aria-expanded")=="true"){
+            $($(this).attr("href")+".timeline>ul").animate( { scrollTop: 0 }, 200 );
+        }
 	});
 	
 </script>
