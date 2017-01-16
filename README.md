@@ -45,3 +45,10 @@ Open source hackable Twitter client for everyone.
  
 7. Connect to your page _index.html_ on port :8080
 8. That'ts it. So simple!
+
+
+##Contribute
+
+>Yay!
+
+Just contact me at [@DavidLibeau](https://twitter.com/DavidLibeau)! 
