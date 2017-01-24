@@ -1,8 +1,12 @@
 # itter.tw
-Open source hackable Twitter client for everyone.
+Self hosted, open source, hackable and fully customizable Twitter client for everyone and for you.
+
+More info at http://itter.tw.
+You can follow [@ittertwclient](https://twitter.com/ittertwclient).
+
 
 ## Installation
->This client can be launch in local host. 
+>This client can be launched in local host. 
 
 ### What you need
 * [NodeJS](https://nodejs.org/)
