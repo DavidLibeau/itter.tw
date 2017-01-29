@@ -3,204 +3,44 @@
 <head>
 	<meta charset="utf-8" />
 	<title>itter.tw</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<meta name="theme-color" content="#000">
-	<link href="//dav.li/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="//dav.li/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<style>
-        
-        body{
-		    display: flex;
-			flex-direction: column;
-			height: 100vh;
-			margin: 0;
-            font-family: sans-serif;
-        }
-		
-		h1,h2,h3 {
-			margin: 0;
-		}
-		
-        a{
-            display: inline-block;
-            text-decoration: none;
-            color: #1DA1F2;
-        }
-        a:hover{
-            text-decoration: underline;
-        }
-		
-		ul {
-			margin: 0;
-			padding: 0;
-			list-style: none;
-		}
-        
-        
-        /* Bootstrap */
-        .tab-dropdown-options {
-            margin-right: -30px;
-        }
-        .tab-dropdown-options>a {
-            display: inline-block!important;
-            padding-right: 40px!important;
-        }
-        .tab-dropdown-options>.dropdown-toggle {
-            position: relative;
-            left: -35px;
-            top: -1px;
-            margin-bottom: -1px;
-            padding: 9.5px 12px;
-            background: none;
-            color: #657786;
-            border-radius: 0;
-            border-bottom-left-radius: 2px;
-        }
-        .tab-dropdown-options.open>.dropdown-toggle,.tab-dropdown-options.active>.dropdown-toggle {
-            border-left: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-        }
-        .tab-dropdown-options>.dropdown-toggle:hover {
-            color: #14171A;
-        }
-        
-        
-        .dropdown-menu>li>form{
-            display: block;
-            padding: 3px 20px;
-            clear: both;
-            font-weight: 400;
-            line-height: 1.42857143;
-            color: #333;
-            white-space: nowrap;   
-        }
-        .dropdown-menu>li>form [type="checkbox"]{
-            position: relative;
-            margin: 0;
-            margin-right: 6px;
-            top: 2px;
-        }
-        
-        .nav-tabs {
-            white-space: nowrap;
-            padding-left: 10px;
-            padding-top: 10px;
-            /*overflow-y: hidden;
-            overflow-x: auto;*/
-        }
-        .nav-tabs>li {
-            float: none;
-            display: inline-block;
-        }
-		.nav-tabs>li>a>span{
-			margin-left: 5px;
-		}
-        
-        
-        
-        
-        .tab-content{
-            display: flex;
-			flex-direction: column;
-            flex: 1;
-            padding: 10px;
-        }
-        
-        .timeline{
-            margin: -10px;   
-        }
-        .timeline.active{
-            display: flex!important;
-        }
-		.timeline>ul {
-			width: 100%;
-			overflow-y: scroll;
-		}
-		.timeline>header{
-			position: absolute;
-			top: 0;
-			width: 100%;
-			background-color: #F5F8FA;
-			z-index: 9;
-		}
-		.timeline>header>h3{
-            display: inline-block;
-		    padding: 10px;
-		}
-        .timeline>header>form{
-            display: inline-block;
-        }
-		
-		.tweet, .embedtweet{
-			position: relative;
-			border: 1px solid #AAB8C2;
-			padding: 5px;
-			border-radius: 2px;
-		}
-		.tweet {
-			margin: 15px 5px;
-			margin-bottom: 0;
-		}
-		.embedtweet{
-			margin: 5px 20px;
-		}
-		
-		.tweet header {
-			border-bottom: 1px solid #AAB8C2;
-			padding-bottom: 2px;
-			margin-bottom: 7px;
-		}
-		.user img{
-			height:20px;
-            margin-right: 5px;
-		}
-        .timestamp{
-            font-size: 12px;
-            margin-left: 5px;
-        }
-        .timestamp, .timestamp * {
-            color: gray!important;
-        }
-		
-		.embedtweet>i{
-			position: absolute;
-			left: -20px;
-			color: #696969;
-		}
-		
-		.media img{
-			height:100px;
-		}
-		a.media {
-			cursor:zoom-in;
-		}
-		
-		.tweet footer {
-			border-top: 1px solid #AAB8C2;
-			padding-top: 2px;
-			margin-top: 7px;
-		}
-		.tweet footer li {
-			display: inline-block;
-			margin-right: 5px;
-			color: #696969;
-		}
-		
-		.emoji{
-			position: relative;
-			height: 20px;
-			top: 2px;
-		}
-		
-		.markupTemplate{
-			display: none;
-		}
-        
-        
-        
-	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="theme-color" content="#fff"/>
+	<link href="//dav.li/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+	<link href="//dav.li/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="//itter.tw/demo/style.css" rel="stylesheet"/>
 </head>
 <body>
+	<div id="tweetComposer" class="tweet panel panel-default">
+		<header class="panel-heading">
+			<a class="user" href="//twitter.com/DavidLibeau" target="_blank" style="color:#0070c0">
+				<img src="" alt="Profil picture of David Libeau">David Libeau @DavidLibeau
+			</a>
+			<span class="timestamp">
+				<a href="#">now</a>
+				via <a href="//itter.tw" target="_blank">itter.tw</a>
+			</span>
+			<button id="cancelTweetComposer" type="button" class="btn btn-danger hiddenTweetComposer pull-right btn-xs">Cancel</button>
+		</header>
+		<div class="panel-body">
+			<div id="plusTweetComposer" class="text-center">
+				<button class="btn btn-default">+</button>
+			</div>
+			<div class="hiddenTweetComposer">
+				<form>
+					<textarea class="form-control" rows="3"></textarea>
+				</form>
+				<button class="btn btn-default">Send</button>
+			</div>
+		</div>
+		<footer class="panel-footer hiddenTweetComposer">
+			<ul style="opacity:0.5">
+				<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
+				<li class="retweet">0<i class="fa fa-retweet" aria-hidden="true"></i></li>
+				<li class="favorite">0<i class="fa fa-star" aria-hidden="true"></i></li>
+			</ul>
+		</footer>
+	</div>
+
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation"><a href="#ittertw" aria-controls="ittertw" role="tab" data-toggle="tab"><span class="hidden-xs">itter.</span>tw</a></li>
         <li role="presentation" class="active tab-dropdown-options">
@@ -215,7 +55,7 @@
                 <li class="dropdown-header">Options</li>
                 <li>
                     <form>
-                        <label class="autoscroll"><input type="checkbox" />Auto-scroll</label>
+                        <label class="autoscroll"><input type="checkbox"/>Auto-scroll</label>
                     </form>
                 </li>
             </ul>
@@ -237,12 +77,34 @@
         </li>
     </ul>
 
+   
+   <!--- BODY -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane" id="ittertw">
             <h3>itter.tw</h3>
+			<p><a class="btn btn-default" href="//itter.tw" target="_blank">Learn more</a></p>
+           <div>
+                <h3>JSON requester</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="jsonRequestURL">URL</label>
+                        <input type="url" class="form-control" id="jsonRequestURL" placeholder="https://twitter.com/ittertwclient/status/822174834822148096">
+                    </div>
+                    <label class="radio-inline">
+                      <input type="radio" name="inlineRadioOptions" id="jsonRequestType" value="tweet"> Tweet
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="inlineRadioOptions" id="jsonRequestType" value="User"> User
+                    </label>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+           </div>
         </div>
         <div id="homeTimeline" role="tabpanel" class="tab-pane active timeline">
-            <ul></ul>
+            <ul>
+				
+		
+			</ul>
         </div>
         <div role="tabpanel" class="tab-pane" id="notifications">
             <h3>Notifications</h3>
@@ -260,20 +122,24 @@
 	
 	
 	<div id="tweetTemplate" class="markupTemplate">
-		<li id="tweet{{twitter.id_str}}" class="tweet">
-			<header>
+		<li id="tweet{{twitter.id_str}}" class="tweet panel panel-default">
+			{{if twitter.in_reply_to_screen_name}}
+				<i class="fa fa-reply" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Replied from @{{twitter.in_reply_to_screen_name}}'s tweet"></i>
+			{{/if}}
+			<header class="panel-heading">
 				<a class="user" href="//twitter.com/{{twitter.user.screen_name}}" target="_blank" style="color:#{{twitter.user.profile_link_color}}">
-					<img src="{{twitter.user.profile_image_url}}" alt="Profil picture of {{twitter.user.name}}">{{twitter.user.name}} @{{twitter.user.screen_name}}
+					<img src="{{twitter.user.profile_image_url}}" alt="Profil picture of {{twitter.user.name}}" data-toggle="tooltip" data-placement="right" title="Profil picture of {{twitter.user.name}}">{{twitter.user.name}} @{{twitter.user.screen_name}}
 				</a>
                 <span class="timestamp">
 				    <a href="//twitter.com/i/web/status/{{twitter.id_str}}" target="_blank">{{preprocess.date}}</a>
                     via {{preprocess.source}}
                 </span>
 			</header>
+			<div class="panel-body">
 			{{if twitter.retweeted_status}}
-			<div class="embedtweet">
+			<div class="embedtweet panel panel-default">
 				<i class="fa fa-retweet" aria-hidden="true"></i>
-				<header>
+				<header class="panel-heading">
 					<a class="user" href="//twitter.com/{{twitter.retweeted_status.user.screen_name}}" target="_blank" style="color:#{{twitter.retweeted_status.user.profile_link_color}}">
 						<img src="{{twitter.retweeted_status.user.profile_image_url}}" alt="Profil picture of {{twitter.retweeted_status.user.name}}" style="height:20px">{{twitter.retweeted_status.user.name}} @{{twitter.retweeted_status.user.screen_name}}
 					</a>
@@ -282,43 +148,48 @@
                         via {{preprocess.retweeted_status.source}}
                     </span>
 				</header>
-				{{preprocess.retweeted_status.tweet}}
-				<footer>
+				<div class="panel-body">
+					{{preprocess.retweeted_status.tweet}}
+					
+					{{if twitter.quoted_status}}
+					<div class="embedtweet quotedtweet panel panel-default">
+						<i class="fa fa-quote-left" aria-hidden="true"></i>
+						<header class="panel-heading">
+							<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank" style="color:#{{twitter.quoted_status.user.profile_link_color}}">
+								<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.screen_name}}
+							</a>
+							<span class="timestamp">
+							  <a href="//twitter.com/i/web/status/{{twitter.quoted_status.id_str}}" target="_blank">{{preprocess.quoted_status.date}}</a>
+								via {{preprocess.quoted_status.source}}
+							</span>
+						</header>
+						<div class="panel-body">
+							{{preprocess.quoted_status.tweet}}
+						</div>
+						<footer class="panel-footer">
+							<ul>
+								<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
+								<li class="retweet">{{twitter.quoted_status.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
+								<li class="favorite">{{twitter.quoted_status.favorite_count}}<i class="fa fa-star" aria-hidden="true"></i></li>
+							</ul>
+						</footer>
+					</div>
+					{{/if}}
+					</div>
+				<footer class="panel-footer">
 					<ul>
 						<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
 						<li class="retweet">{{twitter.retweeted_status.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
 						<li class="favorite">{{twitter.retweeted_status.favorite_count}}<i class="fa fa-star" aria-hidden="true"></i></li>
 					</ul>
 				</footer>
-				{{if twitter.quoted_status}}
-				<div class="embedtweet">
-					<i class="fa fa-quote-left" aria-hidden="true"></i>
-					<header>
-						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank" style="color:#{{twitter.quoted_status.user.profile_link_color}}">
-							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.screen_name}}
-						</a>
-                        <span class="timestamp">
-						  <a href="//twitter.com/i/web/status/{{twitter.quoted_status.id_str}}" target="_blank">{{preprocess.quoted_status.date}}</a>
-                            via {{preprocess.quoted_status.source}}
-                        </span>
-					</header>
-					{{preprocess.quoted_status.tweet}}
-					<footer>
-						<ul>
-							<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
-							<li class="retweet">{{twitter.quoted_status.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
-							<li class="favorite">{{twitter.quoted_status.favorite_count}}<i class="fa fa-star" aria-hidden="true"></i></li>
-						</ul>
-					</footer>
-				</div>
-				{{/if}}
 			</div>
 			{{else}}
 				{{preprocess.tweet}}
 				{{if twitter.quoted_status}}
-				<div class="embedtweet">
+				<div class="embedtweet quotedtweet panel panel-default">
 					<i class="fa fa-quote-left" aria-hidden="true"></i>
-					<header>
+					<header class="panel-heading">
 						<a class="user" href="//twitter.com/{{twitter.quoted_status.user.screen_name}}" target="_blank" style="color:#{{twitter.quoted_status.user.profile_link_color}}">
 							<img src="{{twitter.quoted_status.user.profile_image_url}}" alt"PP" style="height:20px">{{twitter.quoted_status.user.name}} @{{twitter.quoted_status.user.screen_name}}
 						</a>
@@ -327,8 +198,10 @@
                             via {{preprocess.quoted_status.source}}
                         </span>
 					</header>
-					{{preprocess.quoted_status.tweet}}
-					<footer>
+					<div class="panel-body">
+						{{preprocess.quoted_status.tweet}}
+					</div>
+					<footer class="panel-footer">
 						<ul>
 							<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
 							<li class="retweet">{{twitter.quoted_status.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
@@ -338,7 +211,8 @@
 				</div>
 				{{/if}}
 			{{/if}}
-			<footer>
+			</div>
+			<footer class="panel-footer">
 				<ul>
 					<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
 					<li class="retweet">{{twitter.retweet_count}}<i class="fa fa-retweet" aria-hidden="true"></i></li>
@@ -377,7 +251,7 @@
 <script>
 	var tweetTemplate = $("#tweetTemplate").html();
 	
-	var socket = io.connect('http://vps.dav.li:8080');
+	var socket = io.connect('http://demo.itter.tw');
 	socket.on('init', function (data) {
 		console.log("//Connected to server //Client id:["+data.id+"]");
 		socket.emit('init', { data: 'ping' });
@@ -463,7 +337,11 @@
 	}
 	
 	
-	//Other
+	//Bootstrap
+	$(function () { //Bootstrap init
+	  $('[data-toggle="tooltip"]').tooltip();
+	});
+	
     $('.nav-tabs a').click(function (e) {
       e.preventDefault()
       $(this).tab('show')
@@ -503,6 +381,25 @@
             $($(this).attr("href")+".timeline>ul").animate( { scrollTop: 0 }, 200 );
         }
 	});
+	
+	
+	
+	/* Tweet composer */
+	
+	$(".hiddenTweetComposer").hide();
+	$("#cancelTweetComposer").click(function(){
+		$(".hiddenTweetComposer").hide();
+		$("#plusTweetComposer").show();
+	});
+	$("#plusTweetComposer").click(function(){
+		$(".hiddenTweetComposer").show();
+		$(this).hide();
+	});
+	
+	
+	
+	
+	
 	
 </script>
 </body>

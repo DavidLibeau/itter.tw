@@ -8,6 +8,8 @@ const util = require('util');
 
 server.listen(8080);
 
+console.log("app.js started");
+
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
