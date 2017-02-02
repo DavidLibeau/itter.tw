@@ -1,6 +1,7 @@
 var tokens  = require('./tokens.json');
 
-var app = require('express')();
+var express = require('express');
+var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
@@ -13,6 +14,8 @@ console.log("app.js started");
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
+
+app.use(express.static('static'));
 
 var id=0;
 
@@ -72,5 +75,27 @@ io.on('connection', function (socket) {
 		console.log("//Client ["+userid+"] disconnected");
 	});
 
+    
+    // Search / Inspect
+    
+    socket.on('request', function (data) {
+		if(data.type=='search'){
+            T.get('search/tweets', { q: data.query, count: 10 }, function(err, data, response) {
+              socket.emit('respond', { 
+                  type: 'search',
+                  response: data
+              });
+            });
+        }else if(data.type=='tweet/lookup'){
+            T.get('statuses/show', { id: data.query }, function(err, data, response) {
+              socket.emit('respond', { 
+                  type: 'tweet/lookup',
+                  response: data
+              });
+            });
+        }
+	});
+    
+    
 });
 

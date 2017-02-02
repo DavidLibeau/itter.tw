@@ -1,0 +1,218 @@
+body{
+	display: flex;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	
+	flex-direction: column;
+	height: 100vh;
+	margin: 0;
+	font-family: sans-serif;
+}
+
+h1,h2,h3 {
+	margin: 0;
+}
+
+a{
+	display: inline-block;
+	text-decoration: none;
+	color: #1DA1F2;
+}
+a:hover{
+	text-decoration: underline;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.markupTemplate{
+	display: none;
+}
+
+
+/* Bootstrap */
+.tab-dropdown-options {
+	margin-right: -30px;
+}
+.tab-dropdown-options>a {
+	display: inline-block!important;
+	padding-right: 40px!important;
+}
+.tab-dropdown-options>.dropdown-toggle {
+	position: relative;
+	left: -35px;
+	top: -1px;
+	margin-bottom: -1px;
+	padding: 9.5px 12px;
+	background: none;
+	color: #657786;
+	border-radius: 0;
+	border-bottom-left-radius: 2px;
+}
+.tab-dropdown-options.open>.dropdown-toggle,.tab-dropdown-options.active>.dropdown-toggle {
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.tab-dropdown-options>.dropdown-toggle:hover {
+	color: #14171A;
+}
+
+
+.dropdown-menu>li>form{
+	display: block;
+	padding: 3px 20px;
+	clear: both;
+	font-weight: 400;
+	line-height: 1.42857143;
+	color: #333;
+	white-space: nowrap;   
+}
+.dropdown-menu>li>form [type="checkbox"]{
+	position: relative;
+	margin: 0;
+	margin-right: 6px;
+	top: 2px;
+}
+
+.nav-tabs {
+	white-space: nowrap;
+	padding-left: 10px;
+	/*overflow-y: hidden;
+	overflow-x: auto;*/
+	z-index: 9;
+}
+.nav-tabs>li {
+	float: none;
+	display: inline-block;
+}
+.nav-tabs>li>a>span{
+	margin-left: 5px;
+}
+
+
+
+.tab-content{
+	display: flex;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	flex-direction: column;
+	flex: 1;
+    position: relative;
+}
+
+.tab-pane{
+    display: block!important;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: -100%;
+    padding: 15px 20px;
+    overflow: auto;
+}
+.tab-pane.active{
+    left: 0;
+}
+
+
+
+/* ***** */
+
+.timeline{
+    
+}
+.timeline>ul {
+    
+}
+
+.tweet,.embedtweet{
+    position: relative;
+	overflow: visible;
+	margin: 0;
+    margin-bottom: 15px;
+}
+.embedtweet{
+	margin: 0;
+}
+.tweet>header,.tweet>footer ,.embedtweet>header,.embedtweet>footer {
+	padding: 5px 15px;
+}
+.tweet .panel-body {
+    padding: 10px 15px;
+}
+.tweet>footer ,.embedtweet>footer{
+	display: none;
+}
+/*.tweet:active>footer ,.embedtweet:active>footer {
+	display: block;
+}*/
+
+.user img{
+	height:20px;
+	width: 20px;
+	margin-right: 5px;
+}
+.timestamp{
+	font-size: 12px;
+	margin-left: 5px;
+}
+.timestamp, .timestamp * {
+	color: gray!important;
+}
+
+.tweet>i,.embedtweet>i{
+	position: absolute;
+    left: -12px;
+    top: 15px;
+    color: #696969;
+    background-color: #f5f5f5;
+    padding: 5px;
+    border-radius: 50%;
+	border: 1px solid #ddd;
+}
+.quotedtweet {
+	margin-top: 10px;
+}
+
+.media img{
+	height: 100px;
+}
+a.media {
+	cursor: zoom-in;
+	margin-top: 5px;
+}
+
+.tweet footer li {
+	display: inline-block;
+	margin-right: 5px;
+	color: #696969;
+}
+
+.emoji{
+	position: relative;
+	height: 20px;
+	top: 2px;
+}
+
+
+/* tweetComposer */
+
+#tweetComposer{
+    margin: 10px 15px;
+}
+
+ 
+/* Omnisearch */
+
+#omnisearch{
+    margin-bottom: 10px;
+}
+
+.btn-addon{
+    cursor: pointer;
+}

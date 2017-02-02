@@ -7,7 +7,7 @@
 	<meta name="theme-color" content="#fff"/>
 	<link href="//dav.li/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 	<link href="//dav.li/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-	<link href="//itter.tw/demo/style.css" rel="stylesheet"/>
+	<link href="style.css" rel="stylesheet"/>
 </head>
 <body>
 	<div id="tweetComposer" class="tweet panel panel-default">
@@ -61,7 +61,11 @@
             </ul>
         </li>
         <li role="presentation"><a href="#notifications" aria-controls="notifications" role="tab" data-toggle="tab"><i class="fa fa-bell" aria-hidden="true"></i><span class="hidden-xs">Notifications</span></a></li>
+        
         <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><i class="fa fa-envelope" aria-hidden="true"></i><span class="hidden-xs">Messages</span></a></li>
+        
+        <li role="presentation"><a href="#search" aria-controls="search" role="tab" data-toggle="tab"><i class="fa fa-search" aria-hidden="true"></i><span class="hidden-xs">Search</span></a></li>
+        
         <li role="presentation" class="tab-dropdown-options">
             <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i><span class="hidden-xs">Settings</span></a>
             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -80,40 +84,43 @@
    
    <!--- BODY -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane" id="ittertw">
+        <!-- Overview -->
+        <div role="tabpanel" class="tab-pane fade" id="ittertw">
             <h3>itter.tw</h3>
 			<p><a class="btn btn-default" href="//itter.tw" target="_blank">Learn more</a></p>
-           <div>
-                <h3>JSON requester</h3>
-                <form>
-                    <div class="form-group">
-                        <label for="jsonRequestURL">URL</label>
-                        <input type="url" class="form-control" id="jsonRequestURL" placeholder="https://twitter.com/ittertwclient/status/822174834822148096">
-                    </div>
-                    <label class="radio-inline">
-                      <input type="radio" name="inlineRadioOptions" id="jsonRequestType" value="tweet"> Tweet
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="inlineRadioOptions" id="jsonRequestType" value="User"> User
-                    </label>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-           </div>
         </div>
+        <!-- Home Timeline -->
         <div id="homeTimeline" role="tabpanel" class="tab-pane active timeline">
             <ul>
 				
 		
 			</ul>
         </div>
-        <div role="tabpanel" class="tab-pane" id="notifications">
+        <!-- Notification-->
+        <div role="tabpanel" class="tab-pane fade" id="notifications">
             <h3>Notifications</h3>
         </div>
-        <div role="tabpanel" class="tab-pane" id="messages">
+        <!-- Messages -->
+        <div role="tabpanel" class="tab-pane fade" id="messages">
             <h3>Messages</h3>
         </div>
-        <div role="tabpanel" class="tab-pane" id="settings">
+        <!-- Omnisearch -->
+        <div role="tabpanel" class="tab-pane fade" id="search">
+            <form class="form-search content-search" action="/" method="post" id="omnisearch">
+                <div class="input-group input-group-lg">
+                    <input title="Enter the terms you wish to search for." placeholder="Omnisearch" class="form-control form-text" type="text" name="search_block_form" value="" size="15" maxlength="128"><span class="input-group-btn"><button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button></span>
+                </div>
+            </form>
+            <ul id="omnisearchResults">
+                <li class="well well-sm">
+                    You can use <code class="btn-addon" data-addon="inspect://">inspect://</code> or <code class="btn-addon" data-addon="view://">view://</code> with a link to a tweet or a link to a user, or a tweet ID or a @username, or just type any regular search.
+                </li>
+            </ul>
+        </div>
+        <!-- Settings -->
+        <div role="tabpanel" class="tab-pane fade" id="settings">
             <h3>Settings</h3>
+            
         </div>
     </div>
 	
@@ -248,159 +255,6 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="//dav.li/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://twemoji.maxcdn.com/2/twemoji.min.js?2.2"></script>
-<script>
-	var tweetTemplate = $("#tweetTemplate").html();
-	
-	var socket = io.connect('http://demo.itter.tw');
-	socket.on('init', function (data) {
-		console.log("//Connected to server //Client id:["+data.id+"]");
-		socket.emit('init', { data: 'ping' });
-	});
-	socket.on('console', function (json) {
-		console.log(json.data);
-	});
-
-	socket.on('timelineUpdate', function (data) {
-		//console.log(data);
-		var datapreprocess={ twitter:data.tweet, preprocess:preprocess(data.tweet)}
-		console.log(datapreprocess);
-		
-		$("#homeTimeline>ul").prepend(Mark.up(tweetTemplate, datapreprocess));
-        if($('[href="#homeTimeline"]~.dropdown-menu .autoscroll>input').is(":checked")==false){
-            timelineToScroll=$("#homeTimeline>ul").scrollTop()+$("#tweet"+data.tweet.id_str).outerHeight(true);
-            $("#homeTimeline>ul").scrollTop(timelineToScroll);
-        }
-	});
-	
-	function preprocess(tweet){
-		var preprocessdata={tweet:""};
-        if(tweet.full_text!=undefined){
-            preprocessdata.tweet=tweet.full_text;
-        }else{
-            preprocessdata.tweet=tweet.text;
-        }
-		
-		var tweet_entities=tweet.entities;
-		var tweet_extended_entities=tweet.extended_entities;
-		if(tweet.extended_tweet!=undefined){ //Truncated tweet
-			preprocessdata.tweet=tweet.extended_tweet.full_text;
-			tweet_entities=tweet.extended_tweet.entities;
-			tweet_extended_entities=tweet.extended_tweet.extended_entities;
-		}
-		
-        preprocessdata.source=tweet.source.replace('rel="nofollow"','target="_blank"');
-        
-		if(tweet.retweeted_status!=undefined){ //It's a RT
-			preprocessdata.retweeted_status=preprocess(tweet.retweeted_status);
-            preprocessdata.retweeted_status.source=tweet.retweeted_status.source.replace('rel="nofollow"','target="_blank"');
-		}
-		if(tweet.quoted_status!=undefined){ //It's a quoted tweet
-			preprocessdata.quoted_status=preprocess(tweet.quoted_status);
-            preprocessdata.quoted_status.source=tweet.quoted_status.source.replace('rel="nofollow"','target="_blank"');
-		}
-		
-		//console.log(util.inspect(tweet.entities.hashtags));
-		for(var i in tweet_entities.hashtags){ //hashtags
-			var hashtag=tweet_entities.hashtags[i];
-			preprocessdata.tweet=preprocessdata.tweet.replace(new RegExp("[^>]#"+hashtag.text+"($|(<\/a>){0})","i"),Mark.up($("#hashtagTemplate").html(), hashtag));
-		}
-		for(var i in tweet_entities.urls){ //links
-			var link=tweet_entities.urls[i];
-			preprocessdata.tweet=preprocessdata.tweet.replace(link.url,Mark.up($("#linkTemplate").html(), link));
-		}
-		for(var i in tweet_entities.user_mentions){ //mention
-			var mention=tweet_entities.user_mentions[i];
-			preprocessdata.tweet=preprocessdata.tweet.replace(new RegExp("@"+mention.screen_name+"($|(<\/a>){0})","i"),Mark.up($("#mentionTemplate").html(), mention));
-		}
-		if(tweet_extended_entities){
-			var medias="";
-			for(var i in tweet_extended_entities.media){ //media
-				var media=tweet_extended_entities.media[i];
-				if(media.type=="photo"){
-					medias+=Mark.up($("#imgTemplate").html(), media);
-				}else if(media.type=="animated_gif" || media.type=="video"){
-					medias+=Mark.up($("#videoTemplate").html(), media);
-				}
-			}
-			preprocessdata.tweet=preprocessdata.tweet.replace(media.url,"<br/>"+medias);
-		}
-		preprocessdata.tweet=twemoji.parse(preprocessdata.tweet);
-		//console.log(preprocessdata);
-		
-		
-		/* Timestamp */		
-		var date=new Date(tweet.created_at);
-		preprocessdata.date=date.toLocaleString();
-		
-		
-		return preprocessdata;
-	}
-	
-	
-	//Bootstrap
-	$(function () { //Bootstrap init
-	  $('[data-toggle="tooltip"]').tooltip();
-	});
-	
-    $('.nav-tabs a').click(function (e) {
-      e.preventDefault()
-      $(this).tab('show')
-    });
-    
-    $(".dropdown-menu>li>form").click(function(evt){ evt.stopPropagation() });
-    
-	$(".timeline.active>ul").scroll(function(){
-		if($(this).scrollTop()!=0){
-            $(".nav-tabs").css({
-				"-webkit-box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)",
-				"box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)"
-			});
-		}else{
-            $(".nav-tabs").css({
-				"-webkit-box-shadow": "",
-				"box-shadow": ""
-			});
-		}
-	});
-    $(".nav-tabs>li>a").click(function(){
-		if($($(this).attr("href")+".timeline>ul").length && $($(this).attr("href")+".timeline>ul").scrollTop()!=0){
-            $(".nav-tabs").css({
-				"-webkit-box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)",
-				"box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)"
-			});
-		}else{
-            $(".nav-tabs").css({
-				"-webkit-box-shadow": "",
-				"box-shadow": ""
-			});
-		}
-	});
-    
-	$('.nav-tabs>li>a').click(function(){
-        if($(this).attr("aria-expanded")=="true"){
-            $($(this).attr("href")+".timeline>ul").animate( { scrollTop: 0 }, 200 );
-        }
-	});
-	
-	
-	
-	/* Tweet composer */
-	
-	$(".hiddenTweetComposer").hide();
-	$("#cancelTweetComposer").click(function(){
-		$(".hiddenTweetComposer").hide();
-		$("#plusTweetComposer").show();
-	});
-	$("#plusTweetComposer").click(function(){
-		$(".hiddenTweetComposer").show();
-		$(this).hide();
-	});
-	
-	
-	
-	
-	
-	
-</script>
+<script src="script.js"></script>
 </body>
 </html>
