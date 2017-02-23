@@ -1,0 +1,15 @@
+{
+    "short_name": "itter.tw",
+    "name": "itter.tw | Twitter client for everyone and for you",
+    "icons": [
+    {
+      "src": "twemoji-1f423-144px.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    }
+    ],
+    "background_color": "#424242",
+    "theme_color": "#424242",
+    "start_url": "/",
+    "display": "standalone"
+}

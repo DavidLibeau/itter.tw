@@ -4,45 +4,15 @@
 	<meta charset="utf-8" />
 	<title>itter.tw</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<meta name="theme-color" content="#fff"/>
+	<meta name="theme-color" content="#424242"/>
+    <link rel="manifest" href="manifest.json">
 	<link href="//dav.li/fontawesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 	<link href="//dav.li/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="style.css" rel="stylesheet"/>
 </head>
 <body>
-	<div id="tweetComposer" class="tweet panel panel-default">
-		<header class="panel-heading">
-			<a class="user" href="//twitter.com/DavidLibeau" target="_blank" style="color:#0070c0">
-				<img src="" alt="Profil picture of David Libeau">David Libeau @DavidLibeau
-			</a>
-			<span class="timestamp">
-				<a href="#">now</a>
-				via <a href="//itter.tw" target="_blank">itter.tw</a>
-			</span>
-			<button id="cancelTweetComposer" type="button" class="btn btn-danger hiddenTweetComposer pull-right btn-xs">Cancel</button>
-		</header>
-		<div class="panel-body">
-			<div id="plusTweetComposer" class="text-center">
-				<button class="btn btn-default">+</button>
-			</div>
-			<div class="hiddenTweetComposer">
-				<form>
-					<textarea class="form-control" rows="3"></textarea>
-				</form>
-				<button class="btn btn-default">Send</button>
-			</div>
-		</div>
-		<footer class="panel-footer hiddenTweetComposer">
-			<ul style="opacity:0.5">
-				<li class="reply"><i class="fa fa-reply" aria-hidden="true"></i></li>
-				<li class="retweet">0<i class="fa fa-retweet" aria-hidden="true"></i></li>
-				<li class="favorite">0<i class="fa fa-star" aria-hidden="true"></i></li>
-			</ul>
-		</footer>
-	</div>
-
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation"><a href="#ittertw" aria-controls="ittertw" role="tab" data-toggle="tab"><span class="hidden-xs">itter.</span>tw</a></li>
+        <li role="presentation"><a href="#tweetComposer" aria-controls="tweetComposer" role="tab" data-toggle="tab"><i class="fa fa-pencil-square-o" aria-hidden="true"></i><span class="hidden-xs">Composer</span></a></li>
         <li role="presentation" class="active tab-dropdown-options">
             <a href="#homeTimeline" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs">Home Timeline</span></a>
             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -85,12 +55,29 @@
    <!--- BODY -->
     <div class="tab-content">
         <!-- Overview -->
-        <div role="tabpanel" class="tab-pane fade" id="ittertw">
-            <h3>itter.tw</h3>
-			<p><a class="btn btn-default" href="//itter.tw" target="_blank">Learn more</a></p>
+        <div role="tabpanel" class="tab-pane fade" id="tweetComposer">
+            <ul>
+                <li class="tweet panel panel-default">
+                    <header class="panel-heading">
+                        <a class="user" href="//twitter.com/DavidLibeau" target="_blank" style="color:#0070c0">
+                            <img src="" alt="Profil picture of David Libeau">David Libeau @DavidLibeau
+                        </a>
+                        <span class="timestamp">
+                            <a href="#">now</a>
+                            via <a href="//itter.tw" target="_blank">itter.tw</a>
+                        </span>
+                    </header>
+                    <div class="panel-body">
+                        <form>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </form>
+                        <button class="btn btn-default">Send</button>
+                    </div>
+                </li>
+            </ul>
         </div>
         <!-- Home Timeline -->
-        <div id="homeTimeline" role="tabpanel" class="tab-pane active timeline">
+        <div id="homeTimeline" role="tabpanel" class="tab-pane active timeline" data-scroll="0">
             <ul>
 				
 		
@@ -119,8 +106,23 @@
         </div>
         <!-- Settings -->
         <div role="tabpanel" class="tab-pane fade" id="settings">
-            <h3>Settings</h3>
-            
+            <h2>Settings</h2>
+            <p><a class="btn btn-default" href="//itter.tw" target="_blank">Learn more about itter.tw client</a></p>
+            <h3>Theme</h3>
+            <div id="themeSelector">
+                <div class="checkbox disabled">
+                    <label>
+                        <input type="checkbox" value="" checked="checked" disabled>
+                        White default Bootstrap theme
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="theme-darkdeck.css">
+                        Dark deck theme
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
 	

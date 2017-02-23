@@ -43,15 +43,16 @@ ul {
 	padding-right: 40px!important;
 }
 .tab-dropdown-options>.dropdown-toggle {
-	position: relative;
-	left: -35px;
-	top: -1px;
-	margin-bottom: -1px;
-	padding: 9.5px 12px;
-	background: none;
-	color: #657786;
-	border-radius: 0;
-	border-bottom-left-radius: 2px;
+    position: relative;
+    left: -35px;
+    top: -2px;
+    margin-bottom: -2px;
+    padding: 10px 12px;
+    background: none;
+    color: #657786;
+    border-radius: 0;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
 .tab-dropdown-options.open>.dropdown-toggle,.tab-dropdown-options.active>.dropdown-toggle {
 	border-left: 1px solid #ddd;
@@ -81,6 +82,7 @@ ul {
 .nav-tabs {
 	white-space: nowrap;
 	padding-left: 10px;
+    margin-top: 10px;
 	/*overflow-y: hidden;
 	overflow-x: auto;*/
 	z-index: 9;
@@ -200,12 +202,6 @@ a.media {
 }
 
 
-/* tweetComposer */
-
-#tweetComposer{
-    margin: 10px 15px;
-}
-
  
 /* Omnisearch */
 
@@ -213,6 +209,10 @@ a.media {
     margin-bottom: 10px;
 }
 
+/* Doc: .btn-addon
+[data-addon="..."]
+onClick: add addon before Omnisearch
+*/
 .btn-addon{
     cursor: pointer;
 }

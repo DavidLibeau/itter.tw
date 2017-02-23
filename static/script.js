@@ -1,3 +1,8 @@
+/* 
+* jquery.method getCursorPosition
+* Get the text cursor position when the user is in an input
+* 
+*/
 (function($) {
     $.fn.getCursorPosition = function() {
         var input = this.get(0);
@@ -18,28 +23,44 @@
 
 
 
-
 var tweetTemplate = $("#tweetTemplate").html();
 
+
 var socket = io.connect('http://demo.itter.tw');
+// Init
 socket.on('init', function (data) {
     console.log("//Connected to server //Client id:["+data.id+"]");
     socket.emit('init', { data: 'ping' });
 });
+// NodeJS to client Console
 socket.on('console', function (json) {
     console.log(json.data);
 });
 
 socket.on('timelineUpdate', function (data) {
     //console.log(data);
-    renderTweet(data.tweet,"#homeTimeline>ul")
+    renderTweet(data.tweet,"#homeTimeline>ul");
+
+    //Manage scroll
     if($('[href="#homeTimeline"]~.dropdown-menu .autoscroll>input').is(":checked")==false){
-        var timelineToScroll=$("#homeTimeline").scrollTop()+$("#tweet"+data.tweet.id_str).outerHeight(true);
+		var currentScroll=$("#homeTimeline").scrollTop()
+		//console.log("oldScroll: "+oldScroll+" + Tweet outerHeight: "+$("#tweet"+data.tweet.id_str).outerHeight(true));
+        var timelineToScroll=$("#homeTimeline").data("scroll")+$("#tweet"+data.tweet.id_str).outerHeight(true);
         $("#homeTimeline").scrollTop(timelineToScroll);
+		$("#homeTimeline").data("scroll",currentScroll);
     }
+  
 });
 
 
+/* 
+* function renderTweet
+* Render a tweet in a timaline via the itte.tw preprocessor
+* 
+* @params
+* tweet : twitter.com api full object
+* location : CSS selector of the timeline
+*/
 function renderTweet(tweet,location){
     var datapreprocess={ twitter:tweet, preprocess:preprocess(tweet)}
     console.log(datapreprocess);
@@ -48,6 +69,13 @@ function renderTweet(tweet,location){
 }
 
 
+/* 
+* function preprocess
+* itte.tw (internal) tweet text preprocessor : replace entites with html content (t.co/links, @mention, #hashtag, media...) 
+* 
+* @params
+* tweet : twitter.com api full object
+*/
 function preprocess(tweet){
     var preprocessdata={tweet:""};
     if(tweet.full_text!=undefined){
@@ -127,7 +155,8 @@ $('.nav-tabs a').click(function(e) {
     setTimeout(function(){thisparent.tab('show')},100);
     setTimeout(function(){
         //$(thisparent.attr("href")).scrollTop($(thisparent.attr("href")).scrollTop()+1-1);
-        console.log(thisparent.attr("href")+" "+$(thisparent.attr("href")).scrollTop())
+        console.log(thisparent.attr("href")+" "+$(thisparent.attr("href")).scrollTop());
+		$(thisparent.attr("href")).data("scroll",0);
     },200);
     
     if($(this).attr("aria-expanded")=="true"){
@@ -152,32 +181,25 @@ $('.nav-tabs a').click(function(e) {
 
 $(".timeline").scroll(function(){
     //console.log($(this).scrollTop());
-    if($(this).scrollTop()!=0){
-        $(".nav-tabs").css({
-            "-webkit-box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)",
-            "box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)"
-        });
-    }else{
-        $(".nav-tabs").css({
-            "-webkit-box-shadow": "",
-            "box-shadow": ""
-        });
+    if($(this).hasClass("active")){
+        if($(this).scrollTop()!=0){
+            $(".nav-tabs").css({
+                "-webkit-box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)",
+                "box-shadow": "0 5px 10px -5px rgba(0,0,0,0.5)"
+            });
+        }else{
+            $(".nav-tabs").css({
+                "-webkit-box-shadow": "",
+                "box-shadow": ""
+            });
+        }
     }
+	$(this).data("scroll",$(this).scrollTop());
 });
 
 
 
 /* Tweet composer */
-
-$(".hiddenTweetComposer").hide();
-$("#cancelTweetComposer").click(function(){
-    $(".hiddenTweetComposer").hide();
-    $("#plusTweetComposer").show();
-});
-$("#plusTweetComposer").click(function(){
-    $(".hiddenTweetComposer").show();
-    $(this).hide();
-});
 
 
 
@@ -189,7 +211,6 @@ function addonRefresh(){
         $('#omnisearch input[type="text"]').before('<span class="input-group-addon">'+$(this).data("addon")+'</span>');
     });
 }
-
 addonRefresh();
 
 $('#omnisearch input[type="text"]').on("change",function(){
@@ -266,3 +287,14 @@ socket.on('respond', function (data) {
     }
 });
 
+
+
+/* themeSelector */
+
+$('#themeSelector input[type="checkbox"]').on("change",function(){
+    if($(this).is(":checked")){
+        $("head").append('<link href="'+$(this).val()+'" rel="stylesheet"/>'); 
+    }else{
+        $('link[href="'+$(this).val()+'"').remove();
+    }
+});

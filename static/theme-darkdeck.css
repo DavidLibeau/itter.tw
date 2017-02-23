@@ -1,0 +1,83 @@
+/*
+Theme: Dark Deck
+
+Background color default : #424242;
+Background color accent 1 : #262626;
+Background color accent 2 : #141414;
+Border color : #000;
+Text color : #E8E8E8;
+*/
+
+body{
+    background-color: #424242;
+    color: #E8E8E8;
+}
+
+.nav-tabs, .nav-tabs>li.active>a, .tab-dropdown-options.open>.dropdown-toggle, .tab-dropdown-options.active>.dropdown-toggle{
+    border-color: #000;
+}
+.nav-tabs>li>a:hover, .nav-tabs>li.active>a:hover{
+    border-color: transparent;
+}
+.nav-tabs>li.active>a{
+    color: #E8E8E8;
+    background-color: #424242;
+    border-bottom-color: transparent;
+}
+.nav-tabs>li>a:hover, .nav-tabs>li.active>a:hover, .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    color: #E8E8E8;
+    background-color: #262626;
+}
+.nav-tabs>li>a:focus, .nav-tabs>li.active>a:focus{
+    color: #E8E8E8;
+    background-color: #424242;
+    border-color: #000;
+    border-bottom-color: transparent;
+}
+
+/* Dropdown */
+
+.dropdown-menu{
+    background-color: #424242;
+}
+.dropdown-menu>li>a{
+    color: #ccc;
+}
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    color: #ccc;
+    background-color: #141414;
+}
+.dropdown-menu .divider {
+    background-color: #000;
+}
+
+/* Panel */
+
+.panel {
+    background-color: #262626;
+}
+.panel-default{
+    border-color: #000;
+}
+
+.panel-default>.panel-heading {
+    color: #ccc;
+    background-color: #141414;
+    border-color: #000;
+}
+
+.tweet>i, .embedtweet>i {
+    color: #ccc;
+    background-color: #141414;
+    border-color: #000;
+}
+
+.user:hover{
+    color: #ccc!important;
+}
+
+pre, .well{
+    background-color: #262626;
+    color: #E8E8E8;
+    border: #000;
+}
